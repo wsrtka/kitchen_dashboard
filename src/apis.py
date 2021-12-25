@@ -7,7 +7,7 @@ import json
 import requests
 from requests.models import HTTPError
 
-from src.config import LOCATION
+from src.config import LOCATION, OWM_KEY
 
 
 def setup_logger():
@@ -51,8 +51,37 @@ def get_lon_lan(location):
 def get_weather_data():
     lat, lon = get_lon_lan(LOCATION)
 
+    logger = logging.getLogger('basic')
     request_params = {
         'lat': lat,
         'lon': lon,
-        'appid': ''
+        'appid': OWM_KEY
     }
+
+    res = requests.get('https://api.openweathermap.org/data/2.5/onecall', params=request_params)
+
+    try:
+        res.raise_for_status()
+    except HTTPError:
+        logger.exception("I'm afraid I cannot do this, Dave.")
+        return
+
+    res = res.json()
+
+    data = {
+        'timezone': res['timezone'],
+        'current': {
+            'sunrise': res['current']['sunrise'],
+            'sunset': res['current']['sunset'],
+            'temp': res['current']['temp'],
+            'feels_like': res['current']['feels_like'],
+            'wind_speed': res['current']['wind_speed'],
+            'weather': res['current']['weather']['description']
+        },
+        'minutely': res['minutely'],
+        'hourly': res['hourly'],
+        'daily': res['daily'][:3],
+        'alerts': res['alerts']
+    }
+
+    return data
