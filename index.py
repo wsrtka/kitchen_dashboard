@@ -1,11 +1,11 @@
 """Contains main web app entry point."""
 
 
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Hello world!'
+    return render_template('dashboard.html')
