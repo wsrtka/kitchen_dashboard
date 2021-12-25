@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-        Works?
+        <div class="columns">
+            <div class="column is-two-thirds has-background-black">
+                Testing!
+            </div>
+            <div class="column">
+                Attention please
+            </div>
+        </div>
     </body>
 </html>
