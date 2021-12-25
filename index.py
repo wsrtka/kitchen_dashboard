@@ -8,6 +8,7 @@ from src.apis import get_weather_data, setup_logger, LOCATION
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     setup_logger()

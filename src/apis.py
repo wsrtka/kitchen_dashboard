@@ -94,6 +94,13 @@ def get_weather_data():
         'daily': res['daily'][:3]
     }
 
+    # convert temperature to celsius
+    data['current']['temp'] -= 273.15
+    data['current']['feels_like'] -= 273.15
+
+    data['current']['temp'] = round(data['current']['temp'], 2)
+    data['current']['feels_like'] = round(data['current']['feels_like'], 2)
+
     try:
         data['alerts'] = res['alerts']
     except KeyError:
