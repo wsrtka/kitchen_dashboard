@@ -1,17 +1,28 @@
 """Module containing functions to communicate with APIs."""
 
 
+import os
 import logging
-import json
 
 import requests
 from requests.models import HTTPError
 
-from src.config import LOCATION, OWM_KEY
+from src.config import LOCATION
+from src.my_secrets import OWM_KEY
 
 
 def setup_logger():
     logger = logging.getLogger('basic')
+
+    # create log directory
+    try:
+        os.makedirs('../logs')
+    except FileExistsError:
+        pass
+
+    # create debug log file
+    with open('../logs/debug.log', 'w') as debug_file:
+        pass
 
     # log debug messages into file
     fh = logging.FileHandler('../logs/debug.log')
@@ -76,12 +87,16 @@ def get_weather_data():
             'temp': res['current']['temp'],
             'feels_like': res['current']['feels_like'],
             'wind_speed': res['current']['wind_speed'],
-            'weather': res['current']['weather']['description']
+            'weather': res['current']['weather'][0]['description']
         },
         'minutely': res['minutely'],
         'hourly': res['hourly'],
-        'daily': res['daily'][:3],
-        'alerts': res['alerts']
+        'daily': res['daily'][:3]
     }
+
+    try:
+        data['alerts'] = res['alerts']
+    except KeyError:
+        logger.info('No weather alerts.')
 
     return data
