@@ -44,12 +44,12 @@ def get_lon_lan(location):
         logger.exception("I'm afraid I cannot do this, Dave.")
         return
 
-    res = res.json()
+    res = res.json()[0]
     return res['lat'], res['lon']
 
 
 def get_weather_data():
-    lat, lon = get_lon_lan
+    lat, lon = get_lon_lan(LOCATION)
 
     request_params = {
         'lat': lat,
