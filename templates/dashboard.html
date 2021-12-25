@@ -6,9 +6,13 @@
     <body>
         <div class="columns has-background-black has-text-white">
             <div class="column is-two-thirds">
-                Testing!
-                <div class="tile">
-                    Weather tile
+                <p class="title is-1 has-text-white">Kitchen dashboard, v0.1</p>
+                <div class="tile is-flex-direction-column">
+                    <p class="subtitle has-text-white">{{ location }}</p>
+                    <div class="content">
+                        <p>Temperature: {{ weather.current.temp }}°C, feels like {{ weather.current.feels_like }}°C.</p>
+                        <p>Wind: {{ weather.current.wind_speed }} m/s, {{ weather.current.weather }}.</p>
+                    </div>
                 </div>
                 <div class="tile">
                     Szwedzka tile
