@@ -3,53 +3,86 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
-    <body>
-        <div class="columns has-background-black has-text-white">
-            <div class="column is-two-thirds">
-                <p class="title is-1 has-text-white">Kitchen dashboard, v0.1</p>
-                <div class="tile is-flex-direction-column">
-                    <p class="subtitle has-text-white">{{ location }}</p>
-                    <div class="content">
+    <body onload="startTime()">
+        <div class="columns ml-1">
+            <div class="column">
+
+                <p class="title is-1">Kitchen dashboard, v0.1</p>
+
+                <div class="tile is-flex is-flex-direction-column">
+                    <p class="subtitle is-size-3 mb-1">{{ location }}</p>
+                    <div>
                         <p>Temperature: {{ weather.current.temp }}°C, feels like {{ weather.current.feels_like }}°C.</p>
                         <p>Wind: {{ weather.current.wind_speed }} m/s, {{ weather.current.weather }}.</p>
                     </div>
                 </div>
-                <div class="tile">
-                    <div class="tile is-flex-direction-column">
-                        <p class="subtitle has-text-white">Departures for Szwedzka</p>
-                        <table>
-                            {% for dep in szwedzka.departures %}
+
+                <div class="tile is-flex is-flex-direction-column">
+                    <p class="subtitle is-size-4 mt-3 mb-1">Departures for <strong>Szwedzka</strong></p>
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ dep.patternText }}</td>
-                                <td>{{ dep.direction }}</td>
-                                <td>{{ dep.departureTime }}min</td>
+                                <th scope="col">Line</th>
+                                <th scope="col">Direction</th>
+                                <th scope="col">Departure</th>
                             </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                        </thead>
+                        {% for dep in szwedzka.departures %}
+                        <tr>
+                            <td>{{ dep.patternText }}</td>
+                            <td>{{ dep.direction }}</td>
+                            <td>{{ dep.departureTime }}min</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
                 </div>
-                <div class="tile">
-                    <div class="tile is-flex-direction-column">
-                        <p class="subtitle has-text-white">Departures for Rondo Grunwaldzkie</p>
-                        <table>
-                            {% for dep in grunwaldzkie.departures %}
+
+            </div>
+
+            <div class="column mr-2">
+                <div class="columns">
+                    <div class="column is-half"></div>
+                    <div class="title is-1 column" id="txt"></div>
+                </div>
+                <script>
+                    function startTime() {
+                    const today = new Date();
+                    let h = today.getHours();
+                    let m = today.getMinutes();
+                    let s = today.getSeconds();
+                    m = checkTime(m);
+                    s = checkTime(s);
+                    document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
+                    setTimeout(startTime, 1000);
+                    }
+
+                    function checkTime(i) {
+                    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                    return i;
+                    }
+                </script>
+
+                <div class="tile is-flex is-flex-direction-column">
+                    <p class="subtitle is-size-4 mt-3 mb-1">Departures for <strong>Rondo Grunwaldzkie</strong></p>
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ dep.patternText }}</td>
-                                <td>{{ dep.direction }}</td>
-                                <td>{{ dep.departureTime }}min</td>
+                                <th scope="col">Line</th>
+                                <th scope="col">Direction</th>
+                                <th scope="col">Departure</th>
                             </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                        </thead>
+                        {% for dep in grunwaldzkie.departures %}
+                        <tr>
+                            <td>{{ dep.patternText }}</td>
+                            <td>{{ dep.direction }}</td>
+                            <td>{{ dep.departureTime }}min</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
-            <div class="column">
-                Attention please
-                <div class="tile">
-                    idk, current times tile?
-                    <a href="https://github.com/public-apis/public-apis#environment">Find some cool API here.</a>
-                </div>
-            </div>
+
         </div>
     </body>
 </html>
