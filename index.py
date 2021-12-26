@@ -3,7 +3,7 @@
 
 from flask import Flask, render_template
 
-from src.utils import setup_logger
+from src.utils import setup_logger, prepare_mpk_data
 from src.apis import get_weather_data, get_departures, LOCATION
 
 
@@ -21,6 +21,7 @@ def index():
     weather_data = get_weather_data()
 
     # filter data
+    szwedzka_data = prepare_mpk_data(szwedzka_data)
 
     # render site
-    return render_template('dashboard.html', location=LOCATION, weather=weather_data)
+    return render_template('dashboard.html', location=LOCATION, weather=weather_data, szwedzka=szwedzka_data)

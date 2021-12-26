@@ -31,3 +31,18 @@ def setup_logger():
     
     logger.addHandler(fh)
     logger.addHandler(ch)
+
+
+def prepare_mpk_data(data):
+    prepared_data = {
+        'departures': [],
+        'alerts': []
+    }
+
+    for d in data:
+        departures = [{k: v for k, v in dep.items() if k in ['actualTime', 'direction', 'patternText', 'plannedTime']} for dep in d['departures']]
+        alerts = [alert for alert in d['alerts'] if alert not in prepared_data['alerts']]
+        prepared_data['departures'].extend(departures)
+        prepared_data['alerts'].extend(alerts)
+
+    return prepared_data
