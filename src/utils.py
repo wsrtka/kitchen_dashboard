@@ -68,3 +68,25 @@ def remove_redundant_lines(stop1, stop2):
     lines = [dep['patternText'] for dep in stop1]
     stop2 = [dep for dep in stop2 if dep['patternText'] not in lines]
     return stop2
+
+
+def get_rain_message(data):
+    for m, d in enumerate(data['minutely']):
+        if d['precipitation'] > 0:
+            if m == 0:
+                return 'It is raining.'
+            elif m == 1:
+                return f'It is going to rain in {m} minute.'
+            else:
+                return f'It is going to rain in {m} minutes.'
+
+    for h, d in enumerate(data['hourly']):
+        if h > 12:
+            return 'It is not going to rain.'
+        elif d['precipitation'] > 0:
+            if h == 1:
+                return f'It is going to rain in {h} hour.'
+            else:
+                return f'It is going to rain in {h} hours.'
+
+    return "i'm afraid I cannot do this, Dave."
