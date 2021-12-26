@@ -1,43 +1,14 @@
 """Module containing functions to communicate with APIs."""
 
 
-import os
 import logging
 
 import requests
 from requests.models import HTTPError
+from bs4 import BeautifulSoup
 
 from src.config import LOCATION
 from src.my_secrets import OWM_KEY
-
-
-def setup_logger():
-    logger = logging.getLogger('basic')
-
-    # create log directory
-    try:
-        os.makedirs('../logs')
-    except FileExistsError:
-        pass
-
-    # create debug log file
-    with open('../logs/debug.log', 'w') as debug_file:
-        pass
-
-    # log debug messages into file
-    fh = logging.FileHandler('../logs/debug.log')
-    fh.setLevel(logging.DEBUG)
-
-    # log error messages to console
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.ERROR)
-
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
-    
-    logger.addHandler(fh)
-    logger.addHandler(ch)
 
 
 def get_lon_lan(location):
@@ -107,3 +78,21 @@ def get_weather_data():
         logger.info('No weather alerts.')
 
     return data
+
+
+def get_departures(stop):
+    logger = logging.getLogger('basic')
+    
+    try:
+        assert stop in ('szwedzka', 'grunwaldzkie')
+    except AssertionError:
+        logger.exception("I'm afraid I cannot do this, Dave.")
+
+    if stop == 'szwedzka':
+        url_bus = 'https://mpk.jacekk.net/#!plb575'
+        url_tram = 'https://mpk.jacekk.net/#!plt575'
+    else:
+        url_bus = 'https://mpk.jacekk.net/#!plb3338'
+        url_tram = 'https://mpk.jacekk.net/#!plt3338'
+
+    soup = BeautifulSoup(url_bus, 'html.parser')
