@@ -8,7 +8,7 @@
         <div class="columns pl-1 pt-1 has-text-light has-background-black">
             <div class="column">
 
-                <p class="title is-1 has-text-light mb-2">Kitchen dashboard, v0.1</p>
+                <p class="title is-1 has-text-light mb-2">Kitchen dashboard, v1.0</p>
 
                 <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
                     <p class="subtitle is-size-3 mb-1 has-text-light">{{ location }}</p>
@@ -71,7 +71,7 @@
                                 <th scope="col" class="has-text-light">Departure</th>
                             </tr>
                         </thead>
-                        {% for dep in grunwaldzkie.departures %}
+                        {% for dep in grunwaldzkie %}
                         <tr>
                             <td>{{ dep.patternText }}</td>
                             <td>{{ dep.direction }}</td>
