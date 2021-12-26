@@ -3,10 +3,12 @@
 
 import logging
 
+import urllib.request
 import requests
 from requests.models import HTTPError
 from bs4 import BeautifulSoup
 
+from src.utils import parse_table
 from src.config import LOCATION
 from src.my_secrets import OWM_KEY
 
@@ -88,11 +90,32 @@ def get_departures(stop):
     except AssertionError:
         logger.exception("I'm afraid I cannot do this, Dave.")
 
+    url_bus = 'http://ttss.mpk.krakow.pl/internetservice/services/passageInfo/stopPassages/stop'
+    url_tram = 'http://www.ttss.krakow.pl/internetservice/services/passageInfo/stopPassages/stop'
     if stop == 'szwedzka':
-        url_bus = 'https://mpk.jacekk.net/#!plb575'
-        url_tram = 'https://mpk.jacekk.net/#!plt575'
+        request_params = {'stop': 575}
     else:
-        url_bus = 'https://mpk.jacekk.net/#!plb3338'
-        url_tram = 'https://mpk.jacekk.net/#!plt3338'
+        request_params = {'stop': 3338}
 
-    soup = BeautifulSoup(url_bus, 'html.parser')
+    busses_data = requests.get(url_bus, params=request_params)
+    busses_data = busses_data.json()
+    trams_data = requests.get(url_tram, params=request_params)
+    trams_data = trams_data.json()
+
+    try:
+        busses_data.raise_for_status()
+        trams_data.raise_for_status()
+    except HTTPError:
+        logger.exception("I'm afraid I cannot do this, Dave.")
+        return
+
+    busses = {
+        'departures': busses_data['actual'],
+        'alerts': busses_data['generalAlerts']
+    }
+    trams = {
+        'departures': trams_data['actual'],
+        'alerts': trams_data['generalAlerts']
+    }
+
+    return busses, trams
