@@ -1,7 +1,8 @@
 """Contains functions used in other modules."""
 
 import os
-import logging  
+import logging
+import datetime
 
 
 def setup_logger():
@@ -44,5 +45,16 @@ def prepare_mpk_data(data):
         alerts = [alert for alert in d['alerts'] if alert not in prepared_data['alerts']]
         prepared_data['departures'].extend(departures)
         prepared_data['alerts'].extend(alerts)
+
+    current_time = datetime.datetime.now().time()
+
+    for dep in prepared_data['departures']:
+        time_key = 'actualTime' if 'actualTime' in dep else 'plannedTime'
+
+        departure_time = datetime.datetime.strptime(dep[time_key], '%H:%M')
+        departure_time = departure_time.time()
+        departure_time = datetime.datetime.combine(datetime.date.today(), departure_time) - datetime.datetime.combine(datetime.date.today(), current_time)
+        
+        dep['departureTime'] = departure_time.total_seconds() / 60
 
     return prepared_data

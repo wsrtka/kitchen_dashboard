@@ -17,7 +17,15 @@
                 <div class="tile">
                     <div class="tile is-flex-direction-column">
                         <p class="subtitle has-text-white">Departures for Szwedzka</p>
-                        
+                        <table>
+                            {% for dep in szwedzka.departures %}
+                            <tr>
+                                <td>{{ dep.patternText }}</td>
+                                <td>{{ dep.direction }}</td>
+                                <td>{{ dep.departureTime }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
                     </div>
                 </div>
                 <div class="tile">
