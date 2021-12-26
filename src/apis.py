@@ -3,12 +3,9 @@
 
 import logging
 
-import urllib.request
 import requests
 from requests.models import HTTPError
-from bs4 import BeautifulSoup
 
-from src.utils import parse_table
 from src.config import LOCATION
 from src.my_secrets import OWM_KEY
 
@@ -98,9 +95,7 @@ def get_departures(stop):
         request_params = {'stop': 3338}
 
     busses_data = requests.get(url_bus, params=request_params)
-    busses_data = busses_data.json()
     trams_data = requests.get(url_tram, params=request_params)
-    trams_data = trams_data.json()
 
     try:
         busses_data.raise_for_status()
@@ -108,6 +103,9 @@ def get_departures(stop):
     except HTTPError:
         logger.exception("I'm afraid I cannot do this, Dave.")
         return
+
+    busses_data = busses_data.json()
+    trams_data = trams_data.json()
 
     busses = {
         'departures': busses_data['actual'],
