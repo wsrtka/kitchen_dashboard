@@ -2,29 +2,30 @@
 <html>
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+        <meta http-equiv="refresh" content="60" >
     </head>
     <body onload="startTime()">
-        <div class="columns ml-1">
+        <div class="columns pl-1 pt-1 has-text-light has-background-black">
             <div class="column">
 
-                <p class="title is-1">Kitchen dashboard, v0.1</p>
+                <p class="title is-1 has-text-light mb-2">Kitchen dashboard, v0.1</p>
 
-                <div class="tile is-flex is-flex-direction-column">
-                    <p class="subtitle is-size-3 mb-1">{{ location }}</p>
+                <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
+                    <p class="subtitle is-size-3 mb-1 has-text-light">{{ location }}</p>
                     <div>
                         <p>Temperature: {{ weather.current.temp }}°C, feels like {{ weather.current.feels_like }}°C.</p>
                         <p>Wind: {{ weather.current.wind_speed }} m/s, {{ weather.current.weather }}.</p>
                     </div>
                 </div>
 
-                <div class="tile is-flex is-flex-direction-column">
-                    <p class="subtitle is-size-4 mt-3 mb-1">Departures for <strong>Szwedzka</strong></p>
-                    <table class="table">
-                        <thead>
+                <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
+                    <p class="subtitle is-size-4 has-text-light mb-1">Departures for <strong class="has-text-light">Szwedzka</strong></p>
+                    <table class="table has-text-light has-background-dark">
+                        <thead class="has-background-dark has-text-light">
                             <tr>
-                                <th scope="col">Line</th>
-                                <th scope="col">Direction</th>
-                                <th scope="col">Departure</th>
+                                <th scope="col" class="has-text-light">Line</th>
+                                <th scope="col" class="has-text-light">Direction</th>
+                                <th scope="col" class="has-text-light">Departure</th>
                             </tr>
                         </thead>
                         {% for dep in szwedzka.departures %}
@@ -40,7 +41,7 @@
             </div>
 
             <div class="column mr-2">
-                <div class="title is-1 is-flex is-justify-content-flex-end" id="txt"></div>
+                <div class="title is-1 is-flex is-justify-content-flex-end has-text-light pr-2 mb-2" id="txt"></div>
                 <script>
                     function startTime() {
                     const today = new Date();
@@ -59,14 +60,14 @@
                     }
                 </script>
 
-                <div class="tile is-flex is-flex-direction-column">
-                    <p class="subtitle is-size-4 mt-3 mb-1">Departures for <strong>Rondo Grunwaldzkie</strong></p>
-                    <table class="table">
-                        <thead>
+                <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
+                    <p class="subtitle is-size-4 has-text-light mb-1">Departures for <strong class="has-text-light">Rondo Grunwaldzkie</strong></p>
+                    <table class="table has-text-light has-background-dark">
+                        <thead class="has-background-dark">
                             <tr>
-                                <th scope="col">Line</th>
-                                <th scope="col">Direction</th>
-                                <th scope="col">Departure</th>
+                                <th scope="col" class="has-text-light">Line</th>
+                                <th scope="col" class="has-text-light">Direction</th>
+                                <th scope="col" class="has-text-light">Departure</th>
                             </tr>
                         </thead>
                         {% for dep in grunwaldzkie.departures %}
