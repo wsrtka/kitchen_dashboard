@@ -62,3 +62,9 @@ def prepare_mpk_data(data):
     prepared_data['departures'] = [dep for dep in prepared_data['departures'] if dep['departureTime'] >= 0]
 
     return prepared_data
+
+
+def remove_redundant_lines(stop1, stop2):
+    lines = [dep['patternText'] for dep in stop1]
+    stop2 = [dep for dep in stop2 if dep['patternText'] not in lines]
+    return stop2
