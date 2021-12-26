@@ -65,8 +65,8 @@ def prepare_mpk_data(data):
 
 
 def remove_redundant_lines(stop1, stop2):
-    lines = [dep['patternText'] for dep in stop1]
-    stop2 = [dep for dep in stop2 if dep['patternText'] not in lines]
+    lines = [dep['patternText'] for dep in stop1['departures']]
+    stop2 = [dep for dep in stop2['departures'] if dep['patternText'] not in lines]
     return stop2
 
 
@@ -83,10 +83,10 @@ def get_rain_message(data):
     for h, d in enumerate(data['hourly']):
         if h > 12:
             return 'It is not going to rain.'
-        elif d['precipitation'] > 0:
+        elif d['pop'] > 0:
             if h == 1:
-                return f'It is going to rain in {h} hour.'
+                return f"There is a {d['pop']} probability that it is going to rain in {h} hour."
             else:
-                return f'It is going to rain in {h} hours.'
+                return f"There is a {d['pop']} probability that it is going to rain in {h} hours."
 
     return "i'm afraid I cannot do this, Dave."
