@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+        <meta http-equiv="refresh" content="60" >
+    </head>
+    <body onload="startTime()">
+        <div class="columns pl-1 pt-1 has-text-light has-background-black">
+            <div class="column">
+
+                <p class="title is-1 has-text-light mb-2">Kitchen dashboard, v1.0</p>
+
+                <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
+                    <p class="subtitle is-size-3 mb-1 has-text-light">{{ location }}</p>
+                    <div>
+                        <p>Temperature: {{ weather.current.temp }}°C, feels like {{ weather.current.feels_like }}°C.</p>
+                        <p>Wind: {{ weather.current.wind_speed }} m/s, {{ weather.current.weather }}.</p>
+                        <p>{{ weather.rain }}</p>
+                    </div>
+                </div>
+
+                <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
+                    <p class="subtitle is-size-4 has-text-light mb-1">Departures for <strong class="has-text-light">Szwedzka</strong></p>
+                    <table class="table has-text-light has-background-dark">
+                        <thead class="has-background-dark has-text-light">
+                            <tr>
+                                <th scope="col" class="has-text-light">Line</th>
+                                <th scope="col" class="has-text-light">Direction</th>
+                                <th scope="col" class="has-text-light">Departure</th>
+                            </tr>
+                        </thead>
+                        {% for dep in szwedzka.departures %}
+                        <tr>
+                            <td>{{ dep.patternText }}</td>
+                            <td>{{ dep.direction }}</td>
+                            <td>{{ dep.departureTime }}min</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="column mr-2">
+                <div class="title is-1 is-flex is-justify-content-flex-end has-text-light pr-2 mb-2" id="txt"></div>
+                <script>
+                    function startTime() {
+                    const today = new Date();
+                    let h = today.getHours();
+                    let m = today.getMinutes();
+                    let s = today.getSeconds();
+                    m = checkTime(m);
+                    s = checkTime(s);
+                    document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
+                    setTimeout(startTime, 1000);
+                    }
+
+                    function checkTime(i) {
+                    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                    return i;
+                    }
+                </script>
+
+                <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
+                    <p class="subtitle is-size-4 has-text-light mb-1">Departures for <strong class="has-text-light">Rondo Grunwaldzkie</strong></p>
+                    <table class="table has-text-light has-background-dark">
+                        <thead class="has-background-dark">
+                            <tr>
+                                <th scope="col" class="has-text-light">Line</th>
+                                <th scope="col" class="has-text-light">Direction</th>
+                                <th scope="col" class="has-text-light">Departure</th>
+                            </tr>
+                        </thead>
+                        {% for dep in grunwaldzkie %}
+                        <tr>
+                            <td>{{ dep.patternText }}</td>
+                            <td>{{ dep.direction }}</td>
+                            <td>{{ dep.departureTime }}min</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
