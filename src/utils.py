@@ -58,4 +58,7 @@ def prepare_mpk_data(data):
         dep['departureTime'] = departure_time.total_seconds() / 60
         dep['departureTime'] = round(dep['departureTime'])
 
+    prepared_data['departures'].sort(key=lambda x: x['departureTime'])
+    prepared_data['departures'] = [dep for dep in prepared_data['departures'] if dep['departureTime'] >= 0]
+
     return prepared_data
