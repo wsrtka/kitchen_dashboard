@@ -22,6 +22,12 @@ def index():
 
     # filter data
     szwedzka_data = prepare_mpk_data(szwedzka_data)
+    grunwaldzkie_data = prepare_mpk_data(grunwaldzkie_data)
 
     # render site
-    return render_template('dashboard.html', location=LOCATION, weather=weather_data, szwedzka=szwedzka_data)
+    return render_template('dashboard.html', 
+                            location=LOCATION, 
+                            weather=weather_data, 
+                            szwedzka=szwedzka_data, 
+                            grunwaldzkie=grunwaldzkie_data
+                        )

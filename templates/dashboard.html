@@ -22,14 +22,25 @@
                             <tr>
                                 <td>{{ dep.patternText }}</td>
                                 <td>{{ dep.direction }}</td>
-                                <td>{{ dep.departureTime }}</td>
+                                <td>{{ dep.departureTime }}min</td>
                             </tr>
                             {% endfor %}
                         </table>
                     </div>
                 </div>
                 <div class="tile">
-                    Grunwaldzkie tile
+                    <div class="tile is-flex-direction-column">
+                        <p class="subtitle has-text-white">Departures for Rondo Grunwaldzkie</p>
+                        <table>
+                            {% for dep in grunwaldzkie.departures %}
+                            <tr>
+                                <td>{{ dep.patternText }}</td>
+                                <td>{{ dep.direction }}</td>
+                                <td>{{ dep.departureTime }}min</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="column">

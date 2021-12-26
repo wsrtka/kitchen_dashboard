@@ -56,5 +56,6 @@ def prepare_mpk_data(data):
         departure_time = datetime.datetime.combine(datetime.date.today(), departure_time) - datetime.datetime.combine(datetime.date.today(), current_time)
         
         dep['departureTime'] = departure_time.total_seconds() / 60
+        dep['departureTime'] = round(dep['departureTime'])
 
     return prepared_data
