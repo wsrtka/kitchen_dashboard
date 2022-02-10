@@ -85,8 +85,8 @@ def get_rain_message(data):
             return 'It is not going to rain.'
         elif d['pop'] > 0:
             if h == 1:
-                return f"There is a {d['pop']} probability that it is going to rain in {h} hour."
+                return f"There is a {d['pop'] * 100}% probability that it is going to rain in {h} hour."
             else:
-                return f"There is a {d['pop']} probability that it is going to rain in {h} hours."
+                return f"There is a {d['pop'] * 100}% probability that it is going to rain in {h} hours."
 
     return "i'm afraid I cannot do this, Dave."
