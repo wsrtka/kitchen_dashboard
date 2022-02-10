@@ -36,6 +36,8 @@ def setup_logger():
     logger.addHandler(fh)
     logger.addHandler(ch)
 
+    return logger
+
 
 def prepare_mpk_data(data):
     """Prepare Kraków MPK data for dashboard.
