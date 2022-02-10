@@ -12,11 +12,17 @@
 
                 <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
                     <p class="subtitle is-size-3 mb-1 has-text-light">{{ location }}</p>
+                    {% if weather %}
                     <div>
                         <p>Temperature: {{ weather.current.temp }}°C, feels like {{ weather.current.feels_like }}°C.</p>
                         <p>Wind: {{ weather.current.wind_speed }} m/s, {{ weather.current.weather }}.</p>
                         <p>{{ weather.rain }}</p>
                     </div>
+                    {% else %}
+                    <div>
+                        <p>There is no weather in this place!</p>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <div class="tile is-flex is-flex-direction-column box has-background-dark has-text-light">
@@ -34,6 +40,12 @@
                             <td>{{ dep.patternText }}</td>
                             <td>{{ dep.direction }}</td>
                             <td>{{ dep.departureTime }}min</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td>420,69</td>
+                            <td>API error</td>
+                            <td>right now</td>
                         </tr>
                         {% endfor %}
                     </table>
@@ -76,6 +88,12 @@
                             <td>{{ dep.patternText }}</td>
                             <td>{{ dep.direction }}</td>
                             <td>{{ dep.departureTime }}min</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td>420,69</td>
+                            <td>API error</td>
+                            <td>right now</td>
                         </tr>
                         {% endfor %}
                     </table>
