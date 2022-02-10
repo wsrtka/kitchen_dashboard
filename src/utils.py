@@ -48,6 +48,9 @@ def prepare_mpk_data(data):
     Returns:
         dict: Filtered and sorted data for dashboard.
     """
+    if not data:
+        return
+
     prepared_data = {
         'departures': [],
         'alerts': []
@@ -93,6 +96,8 @@ def remove_redundant_lines(stop1, stop2):
     Returns:
         dict: departure data for further stop
     """
+    if not stop1 or not stop2:
+        return
     lines = [dep['patternText'] for dep in stop1['departures']]
     stop2 = [dep for dep in stop2['departures'] if dep['patternText'] not in lines]
     return stop2
@@ -107,6 +112,9 @@ def get_rain_message(data):
     Returns:
         str: Dashboard rain message.
     """
+    if not data:
+        return
+
     for m, d in enumerate(data['minutely']):
         if d['precipitation'] > 0:
             if m == 0:
