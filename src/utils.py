@@ -6,6 +6,8 @@ import datetime
 
 
 def setup_logger():
+    """What the name says: setup logger. Log to file and to console.
+    """
     logger = logging.getLogger('basic')
 
     # create log directory
@@ -26,6 +28,7 @@ def setup_logger():
     ch = logging.StreamHandler()
     ch.setLevel(logging.ERROR)
 
+    # set formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     ch.setFormatter(formatter)
@@ -35,29 +38,43 @@ def setup_logger():
 
 
 def prepare_mpk_data(data):
+    """Prepare Kraków MPK data for dashboard.
+
+    Args:
+        data (dict): MPK Kraków data API.
+
+    Returns:
+        dict: Filtered and sorted data for dashboard.
+    """
     prepared_data = {
         'departures': [],
         'alerts': []
     }
 
     for d in data:
+        # filter out unnecessary data
         departures = [{k: v for k, v in dep.items() if k in ['actualTime', 'direction', 'patternText', 'plannedTime']} for dep in d['departures']]
         alerts = [alert for alert in d['alerts'] if alert not in prepared_data['alerts']]
+        # add this data to return values
         prepared_data['departures'].extend(departures)
         prepared_data['alerts'].extend(alerts)
 
     current_time = datetime.datetime.now().time()
 
     for dep in prepared_data['departures']:
+        # set key depending on mpk api
         time_key = 'actualTime' if 'actualTime' in dep else 'plannedTime'
 
+        # calculate the timedelta for departure
         departure_time = datetime.datetime.strptime(dep[time_key], '%H:%M')
         departure_time = departure_time.time()
         departure_time = datetime.datetime.combine(datetime.date.today(), departure_time) - datetime.datetime.combine(datetime.date.today(), current_time)
         
+        # get minutes
         dep['departureTime'] = departure_time.total_seconds() / 60
         dep['departureTime'] = round(dep['departureTime'])
 
+    # sort busses and trams ascending by departure time
     prepared_data['departures'].sort(key=lambda x: x['departureTime'])
     prepared_data['departures'] = [dep for dep in prepared_data['departures'] if dep['departureTime'] >= 0]
 
@@ -65,12 +82,29 @@ def prepare_mpk_data(data):
 
 
 def remove_redundant_lines(stop1, stop2):
+    """Remove lines that go throgh both stops.
+
+    Args:
+        stop1 (dict): departure data for closer stop.
+        stop2 (dict): departure data for further stop.
+
+    Returns:
+        dict: departure data for further stop
+    """
     lines = [dep['patternText'] for dep in stop1['departures']]
     stop2 = [dep for dep in stop2['departures'] if dep['patternText'] not in lines]
     return stop2
 
 
 def get_rain_message(data):
+    """Parse OpenWeatherMap API data.
+
+    Args:
+        data (dict): raw API data
+
+    Returns:
+        str: Dashboard rain message.
+    """
     for m, d in enumerate(data['minutely']):
         if d['precipitation'] > 0:
             if m == 0:
